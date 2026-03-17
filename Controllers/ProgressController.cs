@@ -35,4 +35,14 @@ public class ProgressController : ControllerBase
         var progress = await _progressService.GetCourseProgress(userId, courseId);
         return Ok(progress);
     }
+
+    [HttpGet("course/{courseId}/user/{userId}")]
+    public async Task<IActionResult> GetCourseWithProgress(int courseId, int userId)
+    {
+        var course = await _progressService.GetCourseWithProgressAsync(userId, courseId);
+        if (course == null)
+            return NotFound();
+            
+        return Ok(course);
+    }
 }

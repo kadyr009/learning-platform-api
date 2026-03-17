@@ -68,4 +68,55 @@ public class ProgressService
         
         return (double)completedLessons / totalLessons * 100;
     }
+
+    public async Task<CourseWithProgressDto?> GetCourseWithProgressAsync(int userId, int courseId)
+    {
+        var course = await _context.Courses
+            .Include(c => c.Modules)
+                .ThenInclude(m => m.Lessons)
+            .FirstOrDefaultAsync(c => c.Id == courseId);
+        
+        if (course == null)
+            return null;
+
+        var userProgress = await _context.UserLessonProgresses
+            .Where(p => p.UserId == userId)
+            .ToListAsync();
+
+        var courseDto = new CourseWithProgressDto
+        {
+            Id = course.Id,
+            Title = course.Title,
+            Description = course.Description,
+            Category = course.Category,
+            Modules = course.Modules
+                .OrderBy(m => m.Order)
+                .Select(m => new ModuleWithProgressDto
+                {
+                    Id = m.Id,
+                    Title = m.Title,
+                    Order = m.Order,
+                    Lessons = m.Lessons
+                        .OrderBy(l => l.Order)
+                        .Select(l => new LessonProgressDto
+                        {
+                            Id = l.Id,
+                            Title = l.Title,
+                            Content = l.Content,
+                            VideoUrl = l.VideoUrl,
+                            Order = l.Order,
+                            IsCompleted = userProgress.Any(p => p.LessonId == l.Id && p.IsCompleted)
+                        })
+                        .ToList()
+                })
+                .ToList()
+        };
+
+        var totalLessons = courseDto.Modules.Sum(m => m.Lessons.Count);
+        var completedLessons = courseDto.Modules.Sum(m => m.Lessons.Count(l => l.IsCompleted));
+
+        courseDto.ProgressPercent = totalLessons == 0 ? 0 : (double)completedLessons / totalLessons * 100;
+
+        return courseDto;
+    }
 }

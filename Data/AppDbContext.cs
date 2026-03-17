@@ -9,5 +9,9 @@ public class AppDbContext : DbContext
     {
     }
 
-    public DbSet<User> Users { get; set; } = null!;
+    public DbSet<User> Users { get; set; }
+    public DbSet<Course> Courses { get; set; }
+    public DbSet<Module> Modules { get; set; }
+    public DbSet<Lesson> Lessons { get; set; }
+    public DbSet<UserLessonProgress> UserLessonProgresses { get; set; }
 }

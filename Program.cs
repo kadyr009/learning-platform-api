@@ -1,4 +1,5 @@
 using LearningPlatformAPI.Data;
+using LearningPlatformAPI.Models;
 using LearningPlatformAPI.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,6 +9,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<CourseService>();
+builder.Services.AddScoped<ModuleService>();
+builder.Services.AddScoped<LessonService>();
+builder.Services.AddScoped<ProgressService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

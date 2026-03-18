@@ -2,11 +2,13 @@ using LearningPlatformAPI.DTO;
 using LearningPlatformAPI.Models;
 using LearningPlatformAPI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LearningPlatformAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class LessonController : ControllerBase
 {
     private readonly LessonService _lessonService;

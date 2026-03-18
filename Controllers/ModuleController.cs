@@ -1,6 +1,7 @@
 using LearningPlatformAPI.DTO;
 using LearningPlatformAPI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LearningPlatformAPI.Controllers;
 
@@ -15,6 +16,7 @@ public class ModuleController : ControllerBase
         _moduleService = moduleService;
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> CreateModule(CreateModuleDto dto)
     {

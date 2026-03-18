@@ -1,6 +1,7 @@
 using LearningPlatformAPI.Services;
 using LearningPlatformAPI.DTO;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LearningPlatformAPI.Controllers;
 
@@ -15,6 +16,7 @@ public class CourseController : ControllerBase
         _courseService = courseService;
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> CreateCourse(CreateCourseDto dto)
     {

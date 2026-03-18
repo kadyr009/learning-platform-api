@@ -14,12 +14,12 @@ public class ProgressService
         _context = context;
     }
 
-    public async Task<UserLessonProgress> CompleteLessonAsync(CompleteLessonDto dto)
+    public async Task<UserLessonProgress> CompleteLessonAsync(int userId, int lessonId)
     {
         var existing = await _context.UserLessonProgresses
             .FirstOrDefaultAsync(p =>
-                p.UserId == dto.UserId &&
-                p.LessonId == dto.LessonId);
+                p.UserId == userId &&
+                p.LessonId == lessonId);
 
         if (existing != null)
         {
@@ -32,8 +32,8 @@ public class ProgressService
 
         var progress = new UserLessonProgress
         {
-            UserId = dto.UserId,
-            LessonId = dto.LessonId,
+            UserId = userId,
+            LessonId = lessonId,
             IsCompleted = true,
             CompletedAt = DateTime.UtcNow
         };

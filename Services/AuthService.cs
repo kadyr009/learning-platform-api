@@ -2,6 +2,9 @@ using LearningPlatformAPI.Data;
 using LearningPlatformAPI.DTO;
 using LearningPlatformAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -10,10 +13,12 @@ namespace LearningPlatformAPI.Services;
 public class AuthService
 {
     private readonly AppDbContext _context;
+    private readonly IConfiguration _configuration;
 
-    public AuthService(AppDbContext context)
+    public AuthService(AppDbContext context, IConfiguration configuration)
     {
         _context = context;
+        _configuration = configuration;
     }
 
     public async Task<(bool IsSuccess, string Message)> RegisterAsync(RegisterDto dto)
@@ -42,7 +47,7 @@ public class AuthService
         if (user == null || user.PasswordHash != ComputeHash(dto.Password))
             return (false, "Неверные данные для входа");
 
-        string token = "PLACEHOLDER_JWT";
+        string token = GenerateJwtToken(user);
 
         return (true, token);
     }
@@ -53,5 +58,29 @@ public class AuthService
         var bytes = Encoding.UTF8.GetBytes(input);
         var hash = sha256.ComputeHash(bytes);
         return Convert.ToBase64String(hash);
+    }
+
+    private string GenerateJwtToken(User user)
+    {
+        var jwtSettings = _configuration.GetSection("Jwt");
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]!));
+
+        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+        var claims = new[]
+        {
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Name, user.Username ?? "")
+        };
+
+        var token = new JwtSecurityToken(
+            issuer: jwtSettings["Issuer"],
+            audience: jwtSettings["Audience"],
+            claims: claims,
+            expires: DateTime.UtcNow.AddHours(2),
+            signingCredentials: credentials
+        );
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }

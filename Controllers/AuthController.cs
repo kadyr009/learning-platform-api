@@ -26,6 +26,6 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Login(LoginDto dto)
     {
         var result = await _authService.LoginAsync(dto);
-        return result.IsSuccess ? Ok(new { message = result.Message}) : BadRequest(new { message = result.Message});
+        return result.IsSuccess ? Ok(new { token = result.Message}) : BadRequest(new { message = result.Message});
     }
 }

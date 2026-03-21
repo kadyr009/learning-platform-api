@@ -2,6 +2,7 @@ using LearningPlatformAPI.Services;
 using LearningPlatformAPI.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace LearningPlatformAPI.Controllers;
 
@@ -20,14 +21,16 @@ public class CourseController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateCourse(CreateCourseDto dto)
     {
-        var course = await _courseService.CreateCourseAsync(dto);
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+        var course = await _courseService.CreateCourseAsync(userId, dto);
         return Ok(course);
     }
 
     [HttpGet]
     public async Task<IActionResult> GetCourses()
     {
-        var courses =await _courseService.GetCoursesAsync();
+        var courses = await _courseService.GetCoursesAsync();
         return Ok(courses);
     } 
 

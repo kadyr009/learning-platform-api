@@ -14,14 +14,14 @@ public class CourseService
         _context = context;
     }
 
-    public async Task<Course> CreateCourseAsync(CreateCourseDto dto)
+    public async Task<Course> CreateCourseAsync(int userId, CreateCourseDto dto)
     {
         var course = new Course
         {
             Title = dto.Title,
             Description = dto.Description,
             Category = dto.Category,
-            AuthorId = dto.AuthorId
+            AuthorId = userId
         };
 
         _context.Courses.Add(course);
@@ -35,11 +35,29 @@ public class CourseService
         return await _context.Courses.ToListAsync();
     }
 
-    public async Task<Course?> GetCourseByIdAsync(int id)
+    public async Task<CourseDetailsDto?> GetCourseByIdAsync(int id)
     {
-        return await _context.Courses   
+        var course = await _context.Courses
             .Include(c => c.Modules)
             .ThenInclude(m => m.Lessons)
             .FirstOrDefaultAsync(c => c.Id == id);
+
+        if (course == null) return null;
+
+        return new CourseDetailsDto
+        {
+            Id = course.Id,
+            Title = course.Title,
+            Modules = course.Modules.Select(m => new ModuleDetailsDto
+            {
+                Id = m.Id,
+                Title = m.Title,
+                Lessons = m.Lessons.Select(l => new LessonDetailsDto
+                {
+                    Id = l.Id,
+                    Title = l.Title
+                }).ToList()
+            }).ToList()
+        };
     }
 }

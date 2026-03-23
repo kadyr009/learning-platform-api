@@ -48,14 +48,22 @@ public class CourseService
         {
             Id = course.Id,
             Title = course.Title,
+            Description = course.Description,
+            Category = course.Category,
+            AuthorId = course.AuthorId,
             Modules = course.Modules.Select(m => new ModuleDetailsDto
             {
                 Id = m.Id,
                 Title = m.Title,
+                CourseId = m.CourseId,
+                Order = m.Order,
                 Lessons = m.Lessons.Select(l => new LessonDetailsDto
                 {
                     Id = l.Id,
-                    Title = l.Title
+                    Title = l.Title,
+                    Content = l.Content,
+                    VideoUrl = l.VideoUrl,
+                    Order = l.Order
                 }).ToList()
             }).ToList()
         };

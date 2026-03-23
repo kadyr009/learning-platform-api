@@ -25,5 +25,5 @@ public class CourseWithProgressDto
     public string? Description { get; set; }
     public string Category { get; set; } = null!;
     public List<ModuleWithProgressDto> Modules { get; set; } = new();
-    public double ProgressPercent { get; set; }
+    public int ProgressPercent { get; set; }
 }

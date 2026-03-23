@@ -37,4 +37,21 @@ public class LessonService
             .Where(l => l.ModuleId == moduleId)
             .ToListAsync();
     }
+
+    public async Task<bool> UpdateLessonAsync(int id, UpdateLessonDto dto)
+    {
+        var lesson = await _context.Lessons.FindAsync(id);
+
+        if (lesson ==null)
+            return false;
+
+        lesson.Title = dto.Title;
+        lesson.Content = dto.Content;
+        lesson.VideoUrl = dto.VideoUrl;
+        lesson.Order = dto.Order;
+
+        await _context.SaveChangesAsync();
+
+        return true;
+    }
 }

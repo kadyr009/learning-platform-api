@@ -31,4 +31,15 @@ public class LessonController : ControllerBase
         var lessons = await _lessonService.GetLessonsByModuleAsync(moduleId);
         return Ok(lessons);
     }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateLesson(int id, UpdateLessonDto dto)
+    {
+        var success = await _lessonService.UpdateLessonAsync(id, dto);
+
+        if (!success)
+            return NotFound("Урок не найден");
+
+        return Ok("Урок обновлён");
+    }
 }

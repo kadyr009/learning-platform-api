@@ -51,7 +51,7 @@ public class ProgressService
             .ToListAsync();
     }
 
-    public async Task<double> GetCourseProgress(int userId, int courseId)
+    public async Task<int> GetCourseProgress(int userId, int courseId)
     {
         var totalLessons = await _context.Lessons
             .Where(l => l.Module.CourseId == courseId)
@@ -66,7 +66,7 @@ public class ProgressService
                         p.Lesson.Module.CourseId == courseId)
             .CountAsync();
         
-        return (double)completedLessons / totalLessons * 100;
+        return Convert.ToInt32((double)completedLessons / totalLessons * 100);
     }
 
     public async Task<CourseWithProgressDto?> GetCourseWithProgressAsync(int userId, int courseId)
@@ -115,7 +115,7 @@ public class ProgressService
         var totalLessons = courseDto.Modules.Sum(m => m.Lessons.Count);
         var completedLessons = courseDto.Modules.Sum(m => m.Lessons.Count(l => l.IsCompleted));
 
-        courseDto.ProgressPercent = totalLessons == 0 ? 0 : (double)completedLessons / totalLessons * 100;
+        courseDto.ProgressPercent = Convert.ToInt32(totalLessons == 0 ? 0 : (double)completedLessons / totalLessons * 100);
 
         return courseDto;
     }

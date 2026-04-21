@@ -8,10 +8,12 @@ namespace LearningPlatformAPI.Services;
 public class ProgressService
 {
     private readonly AppDbContext _context;
+    private readonly GamificationService _gamificationService;
 
-    public ProgressService(AppDbContext context)
+    public ProgressService(AppDbContext context, GamificationService gamificationService)
     {
         _context = context;
+        _gamificationService = gamificationService;
     }
 
     public async Task<UserLessonProgress> CompleteLessonAsync(int userId, int lessonId)
@@ -37,6 +39,8 @@ public class ProgressService
             IsCompleted = true,
             CompletedAt = DateTime.UtcNow
         };
+
+        await _gamificationService.AddXpForLessonAsync(userId);
 
         _context.UserLessonProgresses.Add(progress);
         await _context.SaveChangesAsync();

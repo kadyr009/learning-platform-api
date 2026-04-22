@@ -41,6 +41,9 @@ builder.Services.AddScoped<ModuleService>();
 builder.Services.AddScoped<LessonService>();
 builder.Services.AddScoped<ProgressService>();
 builder.Services.AddScoped<GamificationService>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<QuizService>();
+builder.Services.AddScoped<AchievementService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

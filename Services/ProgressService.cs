@@ -9,11 +9,16 @@ public class ProgressService
 {
     private readonly AppDbContext _context;
     private readonly GamificationService _gamificationService;
+    private readonly AchievementService _achievementService;
 
-    public ProgressService(AppDbContext context, GamificationService gamificationService)
+    public ProgressService(
+        AppDbContext context, 
+        GamificationService gamificationService,
+        AchievementService achievementService)
     {
         _context = context;
         _gamificationService = gamificationService;
+        _achievementService = achievementService;
     }
 
     public async Task<UserLessonProgress> CompleteLessonAsync(int userId, int lessonId)
@@ -44,6 +49,9 @@ public class ProgressService
 
         _context.UserLessonProgresses.Add(progress);
         await _context.SaveChangesAsync();
+
+        await _achievementService.CheckLessonAchievements(userId);
+        await _achievementService.CheckXpAchievements(userId);
 
         return progress;
     }

@@ -14,4 +14,8 @@ public class AppDbContext : DbContext
     public DbSet<Module> Modules { get; set; }
     public DbSet<Lesson> Lessons { get; set; }
     public DbSet<UserLessonProgress> UserLessonProgresses { get; set; }
+    public DbSet<Quiz> Quizzes { get; set; }
+    public DbSet<QuizOption> QuizOptions { get; set; }
+    public DbSet<Achievement> Achievements { get; set; }
+    public DbSet<UserAchievement> UserAchievements { get; set; }
 }

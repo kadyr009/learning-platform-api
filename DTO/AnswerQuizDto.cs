@@ -1,8 +1,7 @@
-namespace LearningPlatformAPI.DTO
+namespace LearningPlatformAPI.DTO;
+
+public class AnswerQuizDto
 {
-    public class AnswerQuizDto
-    {
-        public int QuizId { get; set; }
-        public int SelectedOptionId { get; set; }
-    }
+    public int QuizId { get; set; }
+    public int SelectedOptionId { get; set; }
 }

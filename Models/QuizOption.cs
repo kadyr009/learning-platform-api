@@ -1,17 +1,16 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace LearningPlatformAPI.Models
+namespace LearningPlatformAPI.Models;
+
+public class QuizOption
 {
-    public class QuizOption
-    {
-        [Key]
-        public int Id { get; set; }
+    [Key]
+    public int Id { get; set; }
 
-        public string Text { get; set; } = null!;
+    public string Text { get; set; } = null!;
 
-        public bool IsCorrect { get; set; }
+    public bool IsCorrect { get; set; }
 
-        public int QuizId { get; set; }
-        public Quiz Quiz { get; set; } = null!;
-    }
+    public int QuizId { get; set; }
+    public Quiz Quiz { get; set; } = null!;
 }

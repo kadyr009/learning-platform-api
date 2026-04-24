@@ -1,34 +1,33 @@
 using LearningPlatformAPI.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace LearningPlatformAPI.Services
+namespace LearningPlatformAPI.Services;
+
+public class GamificationService
 {
-    public class GamificationService
+    private readonly AppDbContext _context;
+
+    public GamificationService(AppDbContext context)
     {
-        private readonly AppDbContext _context;
+        _context = context;
+    }
 
-        public GamificationService(AppDbContext context)
-        {
-            _context = context;
-        }
+    public async Task AddXpForLessonAsync(int userId)
+    {
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
-        public async Task AddXpForLessonAsync(int userId)
-        {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        if (user == null)
+            return;
 
-            if (user == null)
-                return;
+        user.XP += 10;
 
-            user.XP += 10;
+        user.Level = CalculateLevel(user.XP);
 
-            user.Level = CalculateLevel(user.XP);
+        await _context.SaveChangesAsync();
+    }
 
-            await _context.SaveChangesAsync();
-        }
-
-        private int CalculateLevel(int xp)
-        {
-            return xp / 100 + 1;
-        }
+    private int CalculateLevel(int xp)
+    {
+        return xp / 100 + 1;
     }
 }

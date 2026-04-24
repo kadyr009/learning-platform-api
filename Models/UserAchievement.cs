@@ -1,18 +1,17 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace LearningPlatformAPI.Models
+namespace LearningPlatformAPI.Models;
+
+public class UserAchievement
 {
-    public class UserAchievement
-    {
-        [Key]
-        public int Id { get; set; }
+    [Key]
+    public int Id { get; set; }
 
-        public int UserId { get; set; }
-        public User User { get; set; } = null!;
+    public int UserId { get; set; }
+    public User User { get; set; } = null!;
 
-        public int AchievementId { get; set; }
-        public Achievement Achievement { get; set; } = null!;
+    public int AchievementId { get; set; }
+    public Achievement Achievement { get; set; } = null!;
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

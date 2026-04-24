@@ -18,4 +18,5 @@ public class AppDbContext : DbContext
     public DbSet<QuizOption> QuizOptions { get; set; }
     public DbSet<Achievement> Achievements { get; set; }
     public DbSet<UserAchievement> UserAchievements { get; set; }
+    public DbSet<CodeTask> CodeTasks { get; set; }
 }

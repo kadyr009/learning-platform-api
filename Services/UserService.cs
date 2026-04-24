@@ -2,29 +2,60 @@ using LearningPlatformAPI.Data;
 using LearningPlatformAPI.DTO;
 using Microsoft.EntityFrameworkCore;
 
-namespace LearningPlatformAPI.Services
+namespace LearningPlatformAPI.Services;
+
+public class UserService
 {
-    public class UserService
+    private readonly AppDbContext _context;
+
+    public UserService(AppDbContext context)
     {
-        private readonly AppDbContext _context;
+        _context = context;
+    }
 
-        public UserService(AppDbContext context)
+    public async Task<List<LeaderboardUserDto>> GetLeaderboardAsync()
+    {
+        var users = await _context.Users
+            .OrderByDescending(u => u.XP)
+            .Take(10)
+            .Select(u => new LeaderboardUserDto
+            {
+                Username = u.Username,
+                XP = u.XP,
+                Level = u.Level
+            })
+            .ToListAsync();
+
+        for (int i = 0; i < users.Count; i++)
         {
-            _context = context;
+            users[i].Rank = i + 1;
         }
 
-        public async Task<List<LeaderboardUserDto>> GetLeaderboardAsync()
+        return users;
+    }
+
+    public async Task<UserProfileDto?> GetUserProfileAsync(int userId)
+    {
+        var user = await _context.Users
+            .FirstOrDefaultAsync(u => u.Id == userId);
+
+        if (user == null)
+            return null;
+
+        var completedLessons = await _context.UserLessonProgresses
+            .CountAsync(p => p.UserId == userId && p.IsCompleted);
+
+        var achievementsCount = await _context.UserAchievements
+            .CountAsync(a => a.UserId == userId);
+
+        return new UserProfileDto
         {
-            return await _context.Users
-                .OrderByDescending(u => u.XP)
-                .Take(10)
-                .Select(u => new LeaderboardUserDto
-                {
-                    Username = u.Username,
-                    XP = u.XP,
-                    Level = u.Level,
-                })
-                .ToListAsync();
-        }
+            Username = user.Username,
+            Email = user.Email,
+            XP = user.XP,
+            Level = user.Level,
+            CompletedLessons = completedLessons,
+            AchievementsCount = achievementsCount
+        };
     }
 }

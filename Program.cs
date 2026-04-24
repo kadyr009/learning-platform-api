@@ -44,9 +44,12 @@ builder.Services.AddScoped<GamificationService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<QuizService>();
 builder.Services.AddScoped<AchievementService>();
+builder.Services.AddScoped<CodeService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddHttpClient<Judge0Service>();
 
 builder.Services.AddSwaggerGen(options =>
 {

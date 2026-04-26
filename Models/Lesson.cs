@@ -2,6 +2,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LearningPlatformAPI.Models;
 
+public enum LessonType
+{
+    Theory = 0,
+    Quiz = 1,
+    Code = 2
+}
+
 public class Lesson
 {
     [Key]
@@ -13,4 +20,5 @@ public class Lesson
     public int ModuleId { get; set; }
     public Module Module { get; set; } = null!;
     public int Order { get; set; } 
+    public LessonType Type { get; set; }
 }

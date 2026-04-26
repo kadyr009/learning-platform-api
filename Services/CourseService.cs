@@ -63,7 +63,8 @@ public class CourseService
                     Title = l.Title,
                     Content = l.Content,
                     VideoUrl = l.VideoUrl,
-                    Order = l.Order
+                    Order = l.Order,
+                    Type = l.Type
                 }).ToList()
             }).ToList()
         };

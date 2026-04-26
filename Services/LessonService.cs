@@ -22,7 +22,8 @@ public class LessonService
             Content = dto.Content,
             VideoUrl = dto.VideoUrl,
             ModuleId = dto.ModuleId,
-            Order = dto.Order
+            Order = dto.Order,
+            Type = dto.Type 
         };
 
         _context.Lessons.Add(lesson);
@@ -49,6 +50,7 @@ public class LessonService
         lesson.Content = dto.Content;
         lesson.VideoUrl = dto.VideoUrl;
         lesson.Order = dto.Order;
+        lesson.Type = dto.Type;
 
         await _context.SaveChangesAsync();
 

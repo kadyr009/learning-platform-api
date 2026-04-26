@@ -117,6 +117,7 @@ public class ProgressService
                             Content = l.Content,
                             VideoUrl = l.VideoUrl,
                             Order = l.Order,
+                            Type = l.Type,
                             IsCompleted = userProgress.Any(p => p.LessonId == l.Id && p.IsCompleted)
                         })
                         .ToList()

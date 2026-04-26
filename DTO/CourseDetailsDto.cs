@@ -1,3 +1,5 @@
+using LearningPlatformAPI.Models;
+
 public class CourseDetailsDto
 {
     public int Id { get; set; }
@@ -26,4 +28,5 @@ public class LessonDetailsDto
     public string? VideoUrl { get; set; }
     public int ModuleId { get; set; }
     public int Order { get; set; } 
+    public LessonType Type { get; set; }
 }

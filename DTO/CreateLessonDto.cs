@@ -1,3 +1,5 @@
+using LearningPlatformAPI.Models;
+
 namespace LearningPlatformAPI.DTO;
 
 public class CreateLessonDto
@@ -8,4 +10,5 @@ public class CreateLessonDto
 
     public int ModuleId { get; set; }
     public int Order { get; set; }
+    public LessonType Type { get; set; }
 }
